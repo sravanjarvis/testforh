@@ -79,12 +79,6 @@ if __name__ == "__main__" :
     )
     app.add_handler(incoming_message_handler)
     #
-    incoming_gdrive_message_handler = MessageHandler(
-        incoming_gdrive_message_f,
-        filters=filters.command([f"{GLEECH_COMMAND}"]) & filters.chat(chats=AUTH_CHANNEL)
-    )
-    app.add_handler(incoming_gdrive_message_handler)
-    #
     incoming_telegram_download_handler = MessageHandler(
         down_load_media_f,
         filters=filters.command([f"{TELEGRAM_LEECH_COMMAND_G}"]) & filters.chat(chats=AUTH_CHANNEL)
@@ -96,12 +90,6 @@ if __name__ == "__main__" :
         filters=filters.command(["purge"]) & filters.chat(chats=AUTH_CHANNEL)
     )
     app.add_handler(incoming_purge_message_handler)
-    #
-    incoming_clone_handler = MessageHandler(
-        g_clonee,
-        filters=filters.command([f"{CLONE_COMMAND_G}"]) & filters.chat(chats=AUTH_CHANNEL)
-    )
-    app.add_handler(incoming_clone_handler)
     #
     incoming_size_checker_handler = MessageHandler(
         check_size_g,
