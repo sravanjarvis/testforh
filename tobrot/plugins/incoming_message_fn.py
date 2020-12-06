@@ -104,63 +104,6 @@ async def incoming_message_f(client, message):
             "**FCUK**! wat have you entered. \nPlease read /help \n"
             f"<b>API Error</b>: {cf_name}"
         )
-#
-async def incoming_gdrive_message_f(client, message):
-    """/gleech command"""
-    g_id = message.from_user.id
-    credit = await message.reply_text(f"🧲 Leeching for you <a href='tg://user?id={g_id}'>🤕</a>", parse_mode="html")
-    i_m_sefg = await message.reply_text("processing", quote=True)
-    is_zip = False
-    is_unzip = False
-    is_unrar = False
-    is_untar = False
-    if len(message.command) > 1:
-        if message.command[1] == "archive":
-            is_zip = True
-        elif message.command[1] == "unzip":
-            is_unzip = True
-        elif message.command[1] == "unrar":
-            is_unrar = True
-        elif message.command[1] == "untar":
-            is_untar = True
-    # get link from the incoming message
-    dl_url, cf_name, _, _ = await extract_link(message.reply_to_message, "GLEECH")
-    LOGGER.info(dl_url)
-    LOGGER.info(cf_name)
-    if dl_url is not None:
-        await i_m_sefg.edit_text("extracting links")
-        # start the aria2c daemon
-        aria_i_p = await aria_start()
-        LOGGER.info(aria_i_p)
-        current_user_id = message.from_user.id
-        # create an unique directory
-        new_download_location = os.path.join(
-            DOWNLOAD_LOCATION,
-            str(current_user_id),
-            str(time.time())
-        )
-        # create download directory, if not exist
-        if not os.path.isdir(new_download_location):
-            os.makedirs(new_download_location)
-        await i_m_sefg.edit_text("trying to download")
-        # try to download the "link"
-        await call_apropriate_function_g(
-            aria_i_p,
-            dl_url,
-            new_download_location,
-            i_m_sefg,
-            is_zip,
-            cf_name,
-            is_unzip,
-            is_unrar,
-            is_untar,
-            message
-        )
-    else:
-        await i_m_sefg.edit_text(
-            "**FCUK**! wat have you entered. \nPlease read /help \n"
-            f"<b>API Error</b>: {cf_name}"
-        )
 
 
 async def incoming_youtube_dl_f(client, message):
@@ -215,7 +158,11 @@ async def incoming_youtube_dl_f(client, message):
             )
     else:
         await i_m_sefg.edit_text(
-            "**FCUK**! wat have you entered. \nPlease read /help \n"
+            if self.message.from_user.username:
+                uname = f"@{self.message.from_user.username}"
+            else:
+                uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
+            "{uname}, what have you entered. \nPlease read #help or tag admin \n"
             f"<b>API Error</b>: {cf_name}"
         )
 #playlist
@@ -233,22 +180,6 @@ async def g_yt_playlist(client, message):
     
     else:
         await message.reply_text("Reply to youtube playlist link only 🙄")
-        
- #
-async def g_clonee(client, message):
-    """ /gclone command """
-    g_id = message.from_user.id
-    if message.reply_to_message is not None:
-        LOGGER.info(message.reply_to_message.text)
-        gclone = CloneHelper(message)
-        gclone.config()
-        a, h = gclone.get_id()
-        LOGGER.info(a)
-        LOGGER.info(h)
-        await gclone.gcl()
-        await gclone.link_gen_size()
-    else:
-        await message.reply_text("You should reply to a message, which format should be [ID of Gdrive file/folder Name of the file/folder]\nOr read Github for detailled information")
 
 
 async def rename_tg_file(client, message):
