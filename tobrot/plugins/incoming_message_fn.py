@@ -157,11 +157,7 @@ async def incoming_youtube_dl_f(client, message):
             )
     else:
         await i_m_sefg.edit_text(
-            if self.message.from_user.username:
-                uname = f"@{self.message.from_user.username}"
-            else:
-                uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
-            "{uname}, what have you entered. \nPlease read #help or tag admin \n"
+            "Hey, what have you entered. \nPlease read #help or tag admin \n"
             f"<b>API Error</b>: {cf_name}"
         )
 #playlist
